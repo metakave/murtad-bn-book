@@ -465,6 +465,25 @@ export default function App() {
             {/* Chapter Paragraphs */}
             <div className="reader-text">
               {currentChapter.paragraphs && currentChapter.paragraphs.map((para, idx) => {
+                // Check if paragraph starts with an in-text chapter label like "অধ্যায় ১", "অধ্যায় ৪", etc.
+                const match = para.match(/^(অধ্যায়\s+[০-৯\d]+)(?:\s+(.*))?$/s);
+                if (match) {
+                  const headingText = toBnNum(match[1].trim());
+                  const remainingText = match[2]?.trim();
+                  return (
+                    <React.Fragment key={idx}>
+                      <h3 className="chapter-heading-h3">
+                        {headingText}
+                      </h3>
+                      {remainingText && (
+                        <p className={remainingText.includes('সূরা') || remainingText.includes('আয়াত') || remainingText.includes('রাসূলুল্লাহ (সাঃ)') ? 'quran-verse' : ''}>
+                          {remainingText}
+                        </p>
+                      )}
+                    </React.Fragment>
+                  );
+                }
+
                 // If text looks like a Quranic quotation or bold reference
                 const isVerse = para.includes('সূরা') || para.includes('আয়াত') || para.includes('রাসূলুল্লাহ (সাঃ)');
                 return (

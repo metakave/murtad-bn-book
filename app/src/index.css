@@ -230,6 +230,24 @@ body {
   word-break: break-word;
 }
 
+/* Standalone 1-line Chapter Heading */
+.chapter-heading-h3 {
+  font-family: var(--font-sans);
+  font-size: 1.25em;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 1.8em 0 0.8em 0;
+  padding: 8px 14px;
+  background: var(--accent-light);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.02em;
+}
+
 /* Quran Verse / Hadith Quote Box */
 .quran-verse {
   background: var(--verse-bg);
