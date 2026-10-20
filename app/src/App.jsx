@@ -548,7 +548,7 @@ export default function App() {
                         );
                       }
 
-                      // If this is Chapter 19 (তথ্যসূত্র ও গ্রন্থপঞ্জি), format each book/source neatly on its own line
+                      // If this is Chapter 19 (তথ্যসুত্র ও গ্রন্থপঞ্জি), format each book/source neatly on its own line
                       if (currentChapter.id === 'bibliography' || currentChapterIndex === 18) {
                         const isSubheading = seg.content.includes('প্রকাশিত বইসমূহ');
                         const isNumberedBook = /^[০-৯\d]+\./.test(seg.content.trim());
