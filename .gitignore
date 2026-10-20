@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+app/node_modules/
+__pycache__/
+*.pyc
+
+# Builds
+app/dist/
+dist/
+
+# Local data & logs
+app/readers.csv
+*.log
+.DS_Store
+
+# IDE & Editor
+.vscode/
+.idea/
