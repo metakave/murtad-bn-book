@@ -270,6 +270,13 @@ body {
   margin-right: 6px;
 }
 
+/* Discussion Heading Bold */
+.discussion-heading-bold {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-right: 6px;
+}
+
 /* Quran Verse / Hadith Quote Box */
 .quran-verse {
   background: var(--verse-bg);

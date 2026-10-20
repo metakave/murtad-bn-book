@@ -594,6 +594,21 @@ export default function App() {
                         }
                       }
 
+                      // Bold "আলোচনা:" or "সামগ্রিক আলোচনা:" wherever it appears at the start or within paragraph
+                      if (seg.content.includes('আলোচনা:')) {
+                        const parts = seg.content.split(/(সামগ্রিক আলোচনা:|আলোচনা:)/g);
+                        return (
+                          <p key={sIdx}>
+                            {parts.map((part, pI) => {
+                              if (part === 'আলোচনা:' || part === 'সামগ্রিক আলোচনা:') {
+                                return <strong key={pI} className="discussion-heading-bold">{part}</strong>;
+                              }
+                              return part;
+                            })}
+                          </p>
+                        );
+                      }
+
                       return (
                         <p key={sIdx}>
                           {seg.content}
