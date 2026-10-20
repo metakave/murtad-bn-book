@@ -253,19 +253,25 @@ body {
   background: var(--verse-bg);
   border-left: 4px solid var(--verse-border);
   padding: 14px 18px;
-  margin: 1.6em 0;
+  margin: 1.4em 0;
   border-radius: 0 12px 12px 0;
-  font-size: 0.96em;
+  font-size: 0.98em;
   box-shadow: var(--shadow);
+  display: block;
+  clear: both;
 }
 
-.verse-source {
-  display: block;
-  font-size: 0.85em;
+.verse-citation-badge {
   font-family: var(--font-sans);
-  color: var(--text-muted);
-  margin-top: 6px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-right: 8px;
+  font-size: 0.9em;
+  display: inline-block;
+  letter-spacing: 0.02em;
 }
 
 /* Custom Modal / Sheet */

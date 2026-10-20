@@ -465,34 +465,62 @@ export default function App() {
             {/* Chapter Paragraphs */}
             <div className="reader-text">
               {currentChapter.paragraphs && currentChapter.paragraphs.map((para, idx) => {
-                // Check if paragraph starts with an in-text chapter label like "অধ্যায় ১", "অধ্যায় ৪", etc.
-                const match = para.match(/^(অধ্যায়\s+[০-৯\d]+)(?:\s+(.*))?$/s);
-                if (match) {
-                  const headingText = toBnNum(match[1].trim());
-                  const remainingText = match[2]?.trim();
-                  return (
-                    <React.Fragment key={idx}>
-                      <h3 className="chapter-heading-h3">
-                        {headingText}
-                      </h3>
-                      {remainingText && (
-                        <p className={remainingText.includes('সূরা') || remainingText.includes('আয়াত') || remainingText.includes('রাসূলুল্লাহ (সাঃ)') ? 'quran-verse' : ''}>
-                          {remainingText}
-                        </p>
-                      )}
-                    </React.Fragment>
+                // First check if paragraph starts with an in-text chapter label like "অধ্যায় ১", "অধ্যায় ৪", etc.
+                const chMatch = para.match(/^(অধ্যায়\s+[০-৯\d]+)(?:\s+(.*))?$/s);
+                let headingBlock = null;
+                let contentText = para;
+
+                if (chMatch) {
+                  headingBlock = (
+                    <h3 className="chapter-heading-h3">
+                      {toBnNum(chMatch[1].trim())}
+                    </h3>
                   );
+                  contentText = chMatch[2]?.trim() || '';
                 }
 
-                // If text looks like a Quranic quotation or bold reference
-                const isVerse = para.includes('সূরা') || para.includes('আয়াত') || para.includes('রাসূলুল্লাহ (সাঃ)');
+                if (!contentText) {
+                  return <React.Fragment key={idx}>{headingBlock}</React.Fragment>;
+                }
+
+                // Split text so that every Quranic verse citation (e.g. ৫:১০৫ ::, ১৩:৩১ ::, ৭৪:৫৪-৫৫ ::) starts in a new line
+                const versePattern = /([০-৯\d]+[:ঃ][০-৯\d]+(?:\s*-\s*[০-৯\d]+)?\s*::)/g;
+                const tokens = contentText.split(versePattern);
+
+                const segments = [];
+                if (tokens[0] && tokens[0].trim()) {
+                  segments.push({ type: 'text', content: tokens[0].trim() });
+                }
+
+                for (let i = 1; i < tokens.length; i += 2) {
+                  const citation = tokens[i].trim();
+                  const body = tokens[i + 1] ? tokens[i + 1].trim() : '';
+                  segments.push({
+                    type: 'verse',
+                    citation: toBnNum(citation.replace('::', '').trim()),
+                    content: body
+                  });
+                }
+
                 return (
-                  <p 
-                    key={idx} 
-                    className={isVerse ? 'quran-verse' : ''}
-                  >
-                    {para}
-                  </p>
+                  <React.Fragment key={idx}>
+                    {headingBlock}
+                    {segments.map((seg, sIdx) => {
+                      if (seg.type === 'verse') {
+                        return (
+                          <div key={sIdx} className="quran-verse">
+                            <span className="verse-citation-badge">{seg.citation}</span>
+                            <span>{seg.content}</span>
+                          </div>
+                        );
+                      }
+                      return (
+                        <p key={sIdx}>
+                          {seg.content}
+                        </p>
+                      );
+                    })}
+                  </React.Fragment>
                 );
               })}
             </div>
