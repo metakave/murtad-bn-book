@@ -594,6 +594,95 @@ export default function App() {
                         }
                       }
 
+                      // Helper to render inline footnote jump links (e.g. 1, 2, 3, 4, 5, 6, 7, 8)
+                      const renderWithFootnoteLinks = (text) => {
+                        // Match footnote digits 1-8 that are adjacent to closing paren or word boundaries
+                        // e.g. সওয়ামি’(5, বিয়া’(6, সালাওয়াত(7, মাসাজিদ8, যিনদীক্ব3, আল্লাহ আছেন।4, ত্যাগ করেছে।1, বিশ্লেষণে2
+                        const fnPattern = /(সওয়ামি’\(|বিয়া’\(|সালাওয়াত\(|মাসাজিদ|যিনদীক্ব|আল্লাহ আছেন।|ত্যাগ করেছে।|বিশ্লেষণে)([1-8])([,\s)]|$)/g;
+                        
+                        if (!fnPattern.test(text)) {
+                          return text;
+                        }
+                        
+                        fnPattern.lastIndex = 0;
+                        const elements = [];
+                        let lastIdx = 0;
+                        let match;
+                        let k = 0;
+                        
+                        while ((match = fnPattern.exec(text)) !== null) {
+                          if (match.index > lastIdx) {
+                            elements.push(text.slice(lastIdx, match.index));
+                          }
+                          const prefix = match[1];
+                          const fnNum = match[2];
+                          const suffix = match[3];
+                          
+                          elements.push(prefix);
+                          elements.push(
+                            <a 
+                              key={`fn-ref-${k++}`} 
+                              id={`fn-ref-anchor-${fnNum}`}
+                              href={`#fn-item-${fnNum}`}
+                              className="footnote-ref-link"
+                              title={`পাদটীকা ${toBnNum(fnNum)} দেখুন`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                const el = document.getElementById(`fn-item-${fnNum}`);
+                                if (el) {
+                                  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                  el.style.backgroundColor = 'var(--accent-light)';
+                                  setTimeout(() => {
+                                    el.style.backgroundColor = 'var(--verse-bg)';
+                                  }, 1500);
+                                }
+                              }}
+                            >
+                              {toBnNum(fnNum)}
+                            </a>
+                          );
+                          elements.push(suffix);
+                          lastIdx = fnPattern.lastIndex;
+                        }
+                        
+                        if (lastIdx < text.length) {
+                          elements.push(text.slice(lastIdx));
+                        }
+                        return elements;
+                      };
+
+                      // Check if this paragraph is a footnote definition (starts with 1-8 followed by space or ' এর দ্বারা')
+                      const fnDefMatch = seg.content.match(/^([1-8])(?:\s+|\s+এর দ্বারা\s+)(.*)$/s);
+                      if (fnDefMatch) {
+                        const fnNum = fnDefMatch[1];
+                        return (
+                          <div 
+                            key={sIdx} 
+                            id={`fn-item-${fnNum}`} 
+                            className="footnote-para"
+                          >
+                            <span className="verse-citation-badge" style={{ verticalAlign: 'middle', marginRight: '6px' }}>
+                              টীকা {toBnNum(fnNum)}
+                            </span>
+                            <span>{seg.content.replace(/^[1-8]\s*/, '')}</span>
+                            <button
+                              type="button"
+                              className="footnote-backref-btn"
+                              title="মূল লেখায় ফিরে যান"
+                              onClick={() => {
+                                const el = document.getElementById(`fn-ref-anchor-${fnNum}`);
+                                if (el) {
+                                  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                  el.focus?.();
+                                }
+                              }}
+                            >
+                              ↑ মূল লেখায় যান
+                            </button>
+                          </div>
+                        );
+                      }
+
                       // Bold "আলোচনা:" or "সামগ্রিক আলোচনা:" wherever it appears at the start or within paragraph
                       if (seg.content.includes('আলোচনা:')) {
                         const parts = seg.content.split(/(সামগ্রিক আলোচনা:|আলোচনা:)/g);
@@ -603,7 +692,7 @@ export default function App() {
                               if (part === 'আলোচনা:' || part === 'সামগ্রিক আলোচনা:') {
                                 return <strong key={pI} className="discussion-heading-bold">{part}</strong>;
                               }
-                              return part;
+                              return renderWithFootnoteLinks(part);
                             })}
                           </p>
                         );
@@ -611,7 +700,7 @@ export default function App() {
 
                       return (
                         <p key={sIdx}>
-                          {seg.content}
+                          {renderWithFootnoteLinks(seg.content)}
                         </p>
                       );
                     })}

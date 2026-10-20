@@ -277,6 +277,60 @@ body {
   margin-right: 6px;
 }
 
+/* Footnotes & Reference Links */
+.footnote-ref-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 0.78em;
+  font-weight: 700;
+  vertical-align: super;
+  line-height: 1;
+  color: var(--accent);
+  background: var(--accent-light);
+  border-radius: 4px;
+  padding: 1px 4px;
+  margin: 0 2px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.footnote-ref-link:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.footnote-para {
+  font-size: 0.88em; /* 1 point smaller than regular reading text */
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border-left: 2px solid var(--accent);
+  background: var(--verse-bg);
+  border-radius: 0 8px 8px 0;
+  transition: background-color 0.4s ease;
+}
+
+.footnote-backref-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--accent);
+  font-size: 0.85em;
+  margin-left: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+.footnote-backref-btn:hover {
+  text-decoration: underline;
+}
+
 /* Quran Verse / Hadith Quote Box */
 .quran-verse {
   background: var(--verse-bg);
