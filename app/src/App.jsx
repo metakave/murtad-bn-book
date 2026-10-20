@@ -548,6 +548,28 @@ export default function App() {
                         );
                       }
 
+                      // If this is Chapter 19 (তথ্যসূত্র ও গ্রন্থপঞ্জি), format each book/source neatly on its own line
+                      if (currentChapter.id === 'bibliography' || currentChapterIndex === 18) {
+                        const isSubheading = seg.content.includes('প্রকাশিত বইসমূহ');
+                        const isNumberedBook = /^[০-৯\d]+\./.test(seg.content.trim());
+                        return (
+                          <p 
+                            key={sIdx} 
+                            style={{ 
+                              marginBottom: isSubheading ? '12px' : '8px',
+                              marginTop: isSubheading ? '18px' : '0',
+                              fontWeight: isSubheading ? 700 : 400,
+                              fontSize: isSubheading ? '17px' : '15px',
+                              paddingLeft: isNumberedBook ? '12px' : '0',
+                              borderLeft: isNumberedBook ? '3px solid var(--primary-light)' : 'none',
+                              lineHeight: 1.6
+                            }}
+                          >
+                            {seg.content}
+                          </p>
+                        );
+                      }
+
                       return (
                         <p key={sIdx}>
                           {seg.content}
