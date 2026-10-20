@@ -570,6 +570,30 @@ export default function App() {
                         );
                       }
 
+                      // If this is Chapter 16 (মুরতাদ হত্যা প্রসঙ্গে উপস্থাপিত হাদীসের পর্যালোচনা), format hadith quotes and analysis headers
+                      if (currentChapter.id === 'hadith_review' || currentChapterIndex === 15) {
+                        if (seg.content.startsWith('১. ') || seg.content.startsWith('২. ')) {
+                          const num = seg.content.slice(0, 3);
+                          const text = seg.content.slice(3);
+                          return (
+                            <div key={sIdx} className="hadith-quote-box">
+                              <span className="hadith-badge">হাদীস {toBnNum(num.trim())}</span>{' '}
+                              <span>{text}</span>
+                            </div>
+                          );
+                        }
+                        if (seg.content.startsWith('পর্যালোচনা:')) {
+                          const heading = 'পর্যালোচনা:';
+                          const text = seg.content.slice(heading.length).trim();
+                          return (
+                            <div key={sIdx} style={{ marginTop: '1.2em' }}>
+                              <h4 className="analysis-heading">{heading}</h4>
+                              <p>{text}</p>
+                            </div>
+                          );
+                        }
+                      }
+
                       return (
                         <p key={sIdx}>
                           {seg.content}

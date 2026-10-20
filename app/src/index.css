@@ -296,6 +296,40 @@ body {
   letter-spacing: 0.02em;
 }
 
+/* Hadith Quote Box */
+.hadith-quote-box {
+  background: var(--verse-bg);
+  border-left: 4px solid var(--accent);
+  padding: 14px 18px;
+  margin: 1.4em 0;
+  border-radius: 0 12px 12px 0;
+  font-size: 0.98em;
+  box-shadow: var(--shadow);
+  display: block;
+  clear: both;
+}
+
+.hadith-badge {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-right: 8px;
+  font-size: 0.88em;
+  display: inline-block;
+}
+
+.analysis-heading {
+  font-family: var(--font-sans);
+  font-size: 1.12em;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 1.4em 0 0.5em 0;
+  display: block;
+}
+
 /* Custom Modal / Sheet */
 .bottom-sheet-backdrop {
   position: fixed;
