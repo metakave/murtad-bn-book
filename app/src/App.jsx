@@ -530,7 +530,7 @@ export default function App() {
                       if (seg.type === 'verse') {
                         return (
                           <div key={sIdx} className="quran-verse">
-                            <span className="verse-citation-badge">{seg.citation}</span>
+                            <span className="verse-citation-badge">{seg.citation}</span>{' '}
                             <span>{seg.content}</span>
                           </div>
                         );
