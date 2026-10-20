@@ -233,11 +233,11 @@ body {
 /* Standalone 1-line Chapter Heading */
 .chapter-heading-h3 {
   font-family: var(--font-sans);
-  font-size: 1.25em;
+  font-size: 1.15em;
   font-weight: 700;
   color: var(--accent);
-  margin: 1.8em 0 0.8em 0;
-  padding: 8px 14px;
+  margin: 1.5em 0 0.6em 0;
+  padding: 6px 14px;
   background: var(--accent-light);
   border-left: 4px solid var(--accent);
   border-radius: 0 10px 10px 0;
@@ -246,6 +246,19 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   letter-spacing: 0.02em;
+}
+
+/* Chapter Subheading / Title as H3 */
+.chapter-title-h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35em;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-primary);
+  margin: 0.6em 0 1.2em 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: block;
 }
 
 /* Quran Verse / Hadith Quote Box */

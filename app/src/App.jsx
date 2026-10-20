@@ -465,13 +465,14 @@ export default function App() {
             {/* Chapter Paragraphs */}
             <div className="reader-text">
               {currentChapter.paragraphs && currentChapter.paragraphs.map((para, idx) => {
-                // First check if paragraph starts with an in-text chapter label like "অধ্যায় ১", "অধ্যায় ৪", etc.
-                const chMatch = para.match(/^(অধ্যায়\s+[০-৯\d]+)(?:\s+(.*))?$/s);
-                let headingBlock = null;
+                let chapterNumBlock = null;
+                let chapterTitleBlock = null;
                 let contentText = para;
 
+                // Check if paragraph starts with an in-text chapter label like "অধ্যায় ১", "অধ্যায় ৪", etc.
+                const chMatch = contentText.match(/^(অধ্যায়\s+[০-৯\d]+)(?:\s+(.*))?$/s);
                 if (chMatch) {
-                  headingBlock = (
+                  chapterNumBlock = (
                     <h3 className="chapter-heading-h3">
                       {toBnNum(chMatch[1].trim())}
                     </h3>
@@ -479,8 +480,27 @@ export default function App() {
                   contentText = chMatch[2]?.trim() || '';
                 }
 
-                if (!contentText) {
-                  return <React.Fragment key={idx}>{headingBlock}</React.Fragment>;
+                // If this is paragraph 0 and starts with the chapter title (or title appears after অধ্যায় X), render title as H3
+                if (idx === 0 && currentChapter.title) {
+                  const normTitle = currentChapter.title.replace(/'/g, '’').trim();
+                  const normContent = contentText.replace(/'/g, '’').trim();
+                  if (normContent.startsWith(normTitle)) {
+                    chapterTitleBlock = (
+                      <h3 className="chapter-title-h3">
+                        {currentChapter.title}
+                      </h3>
+                    );
+                    contentText = normContent.slice(normTitle.length).trim();
+                  }
+                }
+
+                if (!contentText && (chapterNumBlock || chapterTitleBlock)) {
+                  return (
+                    <React.Fragment key={idx}>
+                      {chapterNumBlock}
+                      {chapterTitleBlock}
+                    </React.Fragment>
+                  );
                 }
 
                 // Split text so that every Quranic verse citation (e.g. ৫:১০৫ ::, ১৩:৩১ ::, ৭৪:৫৪-৫৫ ::) starts in a new line
@@ -504,7 +524,8 @@ export default function App() {
 
                 return (
                   <React.Fragment key={idx}>
-                    {headingBlock}
+                    {chapterNumBlock}
+                    {chapterTitleBlock}
                     {segments.map((seg, sIdx) => {
                       if (seg.type === 'verse') {
                         return (
