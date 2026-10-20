@@ -535,6 +535,19 @@ export default function App() {
                           </div>
                         );
                       }
+                      // If this is Chapter 18 (পরিভাষা) and starts with a term before colon, render term in bold
+                      const colonIdx = seg.content.indexOf(':');
+                      if (colonIdx > 0 && colonIdx < 40 && (currentChapter.id === 'terminology' || currentChapterIndex === 17)) {
+                        const termPart = seg.content.slice(0, colonIdx + 1);
+                        const descPart = seg.content.slice(colonIdx + 1).trim();
+                        return (
+                          <p key={sIdx} style={{ marginTop: '1.2em' }}>
+                            <strong className="terminology-term-bold">{termPart}</strong>
+                            <span>{descPart}</span>
+                          </p>
+                        );
+                      }
+
                       return (
                         <p key={sIdx}>
                           {seg.content}

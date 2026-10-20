@@ -261,6 +261,15 @@ body {
   display: block;
 }
 
+/* Terminology Term until Colon */
+.terminology-term-bold {
+  font-family: var(--font-sans);
+  font-size: 1.08em;
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: 6px;
+}
+
 /* Quran Verse / Hadith Quote Box */
 .quran-verse {
   background: var(--verse-bg);
